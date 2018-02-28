@@ -1,5 +1,6 @@
 <?php namespace PopcornPHP\RedirectToHTTPS;
 
+use BackendAuth;
 use System\Classes\PluginBase;
 
 class Plugin extends PluginBase
@@ -21,8 +22,10 @@ class Plugin extends PluginBase
             ->prependMiddleware('PopcornPHP\RedirectToHTTPS\Classes\HTTPSMiddleware');
 	}
 	
-	public function registerSettings()
+    public function registerSettings()
     {
+     $user = BackendAuth::getUser();
+      if($user->is_superuser){
         return [
             'redirect_to_https_settings' => [
                 'label'       => 'Redirect to https',
@@ -34,5 +37,7 @@ class Plugin extends PluginBase
                 'keywords'    => 'https redirect'
             ]
         ];
+      }
+      return [];
     }
 }
